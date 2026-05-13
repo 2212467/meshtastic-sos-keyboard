@@ -26,15 +26,18 @@ Works fully offline through LoRa mesh.
 ---
 
 # Hardware
+- Raspberry Pi (Zero / 3 / 4 / 5)
+- Node Meshtastic connected by USB (ex: LILYGO / T-Beam / etc.)
+- 4x push buttons
+- 3x 220Ω resistor
+- 1x RBG led
+- 1x Buzzer
+- Lots of breadboard jumper wires
+- USB cable to connect Rasp <-> Meshtastic
 
-## Main Controller
-- Raspberry Pi Zero 2 W
-
-## Meshtastic Node
+## Tested with
+- Raspberry Pi 4B
 - LILYGO TTGO LoRa32 V2.1
-
-## Buttons
-- 4x momentary push buttons
 
 ---
 
@@ -50,6 +53,7 @@ Works fully offline through LoRa mesh.
 | O6 | GREEN COLOR |
 | 13 | BLUE COLOR |
 | 18 | Buzzer |
+| 06 | Groung |
 
 ---
 
@@ -60,6 +64,8 @@ https://www.raspberrypi.com/documentation/computers/raspberry-pi.html
 https://app.cirkitdesigner.com/project
 
 https://pinouthub.com/raspberry-pi-zero/
+
+http://chatgpt.com
 
 ---
 
