@@ -1,3 +1,8 @@
+from gpiozero import Device
+from gpiozero.pins.native import NativeFactory
+
+Device.pin_factory = NativeFactory()
+
 from gpiozero import Button, Buzzer, RGBLED
 from signal import pause
 from meshtastic.serial_interface import SerialInterface
@@ -11,11 +16,64 @@ import sys
 # RGB LED
 # =========================================
 
-rgb = RGBLED(
-    red=5,
-    green=6,
-    blue=13
-)
+from gpiozero import OutputDevice
+
+RED = OutputDevice(5)
+GREEN = OutputDevice(6)
+BLUE = OutputDevice(13)
+
+# =========================================
+# RGB FUNCTIONS
+# =========================================
+
+def rgb_off():
+    RED.off()
+    GREEN.off()
+    BLUE.off()
+
+def rgb_red():
+    RED.on()
+    GREEN.off()
+    BLUE.off()
+
+def rgb_green():
+    RED.off()
+    GREEN.on()
+    BLUE.off()
+
+def rgb_blue():
+    RED.off()
+    GREEN.off()
+    BLUE.on()
+
+def rgb_yellow():
+    RED.on()
+    GREEN.on()
+    BLUE.off()
+
+def rgb_purple():
+    RED.on()
+    GREEN.off()
+    BLUE.on()
+
+# =========================================
+# ALIASES (para não mexer no resto do código)
+# =========================================
+
+def led_boot():
+    rgb_blue()
+
+def led_connecting():
+    rgb_purple()
+
+def led_ready():
+    rgb_green()
+
+def led_sending():
+    rgb_yellow()
+
+def led_error():
+    rgb_red()
 
 # =========================================
 # BUZZER
@@ -27,7 +85,7 @@ buzzer = Buzzer(BUZZER_PIN)
 # GLOBALS
 # =========================================
 
-buttons = []
+buttons = {}
 
 SEND_COOLDOWN = 10
 last_send = 0
@@ -36,23 +94,25 @@ last_send = 0
 # RGB STATES
 # =========================================
 
-def led_off():
-    rgb.off()
+def rgb_off():
+    RED.off()
+    GREEN.off()
+    BLUE.off()
 
-def led_boot():
-    rgb.color = (0, 0, 1)   # azul
+def rgb_red():
+    RED.on(); GREEN.off(); BLUE.off()
 
-def led_connecting():
-    rgb.color = (1, 0, 1)   # roxo
+def rgb_green():
+    RED.off(); GREEN.on(); BLUE.off()
 
-def led_ready():
-    rgb.color = (0, 1, 0)   # verde
+def rgb_blue():
+    RED.off(); GREEN.off(); BLUE.on()
 
-def led_sending():
-    rgb.color = (1, 1, 0)   # amarelo
+def rgb_yellow():
+    RED.on(); GREEN.on(); BLUE.off()
 
-def led_error():
-    rgb.color = (1, 0, 0)   # vermelho
+def rgb_purple():
+    RED.on(); GREEN.off(); BLUE.on()
 
 # =========================================
 # BUZZER
@@ -155,6 +215,8 @@ def send_message(message):
 
         led_sending()
 
+        print("[DEBUG] About to call sendText()")
+
         iface.sendText(
             text=message,
             wantAck=True
@@ -182,34 +244,63 @@ def send_message(message):
 
         led_off()
 
+
 # =========================================
-# BUTTONS
+# BUTTON SETUP
 # =========================================
 
 for pin, message in BUTTONS.items():
 
     print(f"[INIT] GPIO {pin} -> {message}")
 
-    btn = Button(
-        pin,
-        pull_up=True,
-        hold_time=LONG_PRESS_SECONDS,
-        bounce_time=0.2
-    )
-
-    btn.when_held = lambda m=message: send_message(m)
-
-    buttons.append(btn)
-
-# =========================================
-# READY
-# =========================================
+    buttons[pin] = {
+        "button": Button(
+            pin,
+            pull_up=True,
+            bounce_time=0.1
+        ),
+        "message": message,
+        "pressed_time": None
+    }
 
 print("[READY] SOS Keyboard running")
 
+# =========================================
+# MAIN LOOP
+# =========================================
+
 try:
 
-    pause()
+    while True:
+
+        for pin, data in buttons.items():
+
+            btn = data["button"]
+
+            # botão carregado
+            if btn.is_pressed:
+
+                # primeira deteção
+                if data["pressed_time"] is None:
+
+                    data["pressed_time"] = time.time()
+
+                # long press
+                elif time.time() - data["pressed_time"] >= LONG_PRESS_SECONDS:
+
+                    send_message(data["message"])
+
+                    # esperar libertar botão
+                    while btn.is_pressed:
+                        time.sleep(0.1)
+
+                    data["pressed_time"] = None
+
+            else:
+
+                data["pressed_time"] = None
+
+        time.sleep(0.05)
 
 except KeyboardInterrupt:
 
