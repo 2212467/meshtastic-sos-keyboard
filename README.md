@@ -36,8 +36,8 @@ Works fully offline through LoRa mesh.
 - USB cable to connect Rasp <-> Meshtastic
 
 ## Tested with
-- Raspberry Pi 4B
-- LILYGO TTGO LoRa32 V2.1
+- Raspberry Pi 4B (Debian GNU/Linux 13 (trixie))
+- LILYGO TTGO LoRa32 V2.1 (Meshtastic 2.7.22 Alpha)
 
 ---
 
