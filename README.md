@@ -1,50 +1,73 @@
-⚙️ PASSO A PASSO REAL
-🧰 1. Instalar ambiente de build
+# Meshtastic SOS Keyboard
 
-Instala:
+Physical emergency button system for Meshtastic networks.
 
-Visual Studio Code
-PlatformIO extension
+Designed for:
+- elderly assistance
+- remote homes
+- off-grid communication
+- emergency alerts
 
-📥 2. Clonar firmware oficial
-git clone https://github.com/meshtastic/firmware.git
-cd firmware
+Works fully offline through LoRa mesh.
 
-⚙️ 3. Abrir no VS Code
-code .
+---
 
-🧱 4. Adicionar módulo GPIO (o teu código)
+# Features
 
-Cria:
+- 🚨 SOS emergency button
+- 📞 CALL request
+- ✅ OK status
+- 🆘 HELP request
+- long-press protection
+- LED + buzzer feedback
+- works without Internet
+- uses official Meshtastic firmware
 
-src/modules/GpioAlertModule.cpp
-src/modules/GpioAlertModule.h
+---
 
-(usa o código que já te dei antes — é exatamente este módulo)
+# Hardware
 
-🔌 5. Ligar ao sistema Meshtastic
-Agora o ponto crítico:
+## Main Controller
+- Raspberry Pi Zero 2 W
 
-Em Meshtastic firmware tens de integrar com o “node loop”.
+## Meshtastic Node
+- LILYGO TTGO LoRa32 V2.1
 
-Vai a:
-src/main.cpp
+## Buttons
+- 4x momentary push buttons
 
-ou dependendo da versão:
+---
 
-src/mesh/Node.cpp
+# GPIO Mapping
 
-adiciona:
-#include "modules/GpioAlertModule.h"
+| GPIO | Function |
+|---|---|
+| 17 | SOS |
+| 27 | CALL |
+| 22 | OK |
+| 23 | HELP |
+| O5 | RED COLOR |
+| O6 | GREEN COLOR |
+| 13 | BLUE COLOR |
+| 18 | Buzzer |
 
-no setup():
-initGpioAlertModule();
+---
 
-no loop():
-loopGpioAlertModule();
+# Links used
 
-⚡ 6. Compilar firmware
-pio run -e tlora32-v2
+https://www.raspberrypi.com/documentation/computers/raspberry-pi.html
+https://app.cirkitdesigner.com/project
+https://pinouthub.com/raspberry-pi-zero/
 
-📡 7. Flash para o LILYGO
-pio run -e tlora32-v2 -t upload
+---
+
+# Installation
+
+```bash
+git clone https://github.com/2212467/meshtastic-sos-keyboard.git
+
+cd meshtastic-sos-keyboard
+
+chmod +x install.sh
+
+./install.sh
