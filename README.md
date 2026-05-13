@@ -56,7 +56,9 @@ Works fully offline through LoRa mesh.
 # Links used
 
 https://www.raspberrypi.com/documentation/computers/raspberry-pi.html
+
 https://app.cirkitdesigner.com/project
+
 https://pinouthub.com/raspberry-pi-zero/
 
 ---
