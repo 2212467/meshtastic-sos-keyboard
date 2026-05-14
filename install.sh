@@ -32,7 +32,7 @@ if [ -d "$APP_DIR" ]; then
     git pull
 else
     echo "⬇️ Cloning repository..."
-    git clone https://github.com/2212467/sos-meshtastic-keyboard.git "$APP_DIR"
+    git clone https://github.com/2212467/meshtastic-sos-keyboard.git "$APP_DIR"
     cd "$APP_DIR"
 fi
 
