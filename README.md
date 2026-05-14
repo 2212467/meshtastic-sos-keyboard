@@ -57,7 +57,7 @@ NOTE: After pressing the button for 2sec, it will send the message to the PRIMAR
 | 18 | Buzzer |
 | 06 | Groung |
 
-Check: https://github.com/2212467/meshtastic-sos-keyboard/blob/main/wiring/gpio_map.png?raw=true
+Check: https://github.com/2212467/meshtastic-sos-keyboard/blob/main/wiring/gpio_map.png
 
 ---
 
