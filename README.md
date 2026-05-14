@@ -43,7 +43,10 @@ NOTE: Default button messages can be changed on `config.sh`
 
 ## Tested with
 - Raspberry Pi 4B (Raspberry Pi OS 64-bit - Debian GNU/Linux 13 (trixie))
-- LILYGO TTGO LoRa32 V2.1 (Meshtastic 2.7.22 Alpha)
+- Raspberry Pi 4B (Ubuntu 26.04 LTS)
+- LILYGO TTGO LoRa32 V2.1 (Meshtastic 2.7.23 Alpha)
+- Xiao ESP32-S3 (Meshtastic 2.7.15 Beta)
+- Heltec V3 (Meshtastic 2.7.21 Alpha)
 
 ---
 
