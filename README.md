@@ -101,6 +101,12 @@ curl -sSL https://raw.githubusercontent.com/2212467/meshtastic-sos-keyboard/refs
 
 # Debug
 
+### App running
+Check if APP is running
+```
+systemctl --user status sos-keyboard.service
+```
+
 ### No Meshtastic Device Found
 *(must be inside myenv)*
 ```bash
