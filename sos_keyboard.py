@@ -1,5 +1,4 @@
 from meshtastic.serial_interface import SerialInterface
-from gpiozero import Buzzer
 import gpiod
 import serial.tools.list_ports
 
@@ -40,13 +39,27 @@ chip = gpiod.Chip(GPIO_CHIP)
 # BUZZER
 # =========================================
 
-buzzer = Buzzer(BUZZER_PIN)
+buzzer_request = chip.request_lines(
+    config={
+        BUZZER_PIN: gpiod.LineSettings(
+            direction=gpiod.line.Direction.OUTPUT
+        )
+    }
+)
 
 def beep(t=0.2):
 
-    buzzer.on()
+    buzzer_request.set_value(
+        BUZZER_PIN,
+        gpiod.line.Value.ACTIVE
+    )
+
     time.sleep(t)
-    buzzer.off()
+
+    buzzer_request.set_value(
+        BUZZER_PIN,
+        gpiod.line.Value.INACTIVE
+    )
 
 # =========================================
 # GLOBALS
@@ -66,7 +79,10 @@ def cleanup():
     print("\n[CLEANUP] Closing application")
 
     try:
-        buzzer.off()
+        buzzer_request.set_value(
+            BUZZER_PIN,
+            gpiod.line.Value.INACTIVE        
+        )
     except:
         pass
 

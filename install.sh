@@ -5,8 +5,9 @@ set -e
 echo "🚀 Installing SOS Meshtastic Keyboard..."
 
 # =========================
-# 1. DETECT USER + HOME
+# USER + PATHS
 # =========================
+
 USER_NAME=$(whoami)
 USER_HOME=$HOME
 
@@ -16,52 +17,81 @@ echo "👤 User: $USER_NAME"
 echo "📁 Install dir: $APP_DIR"
 
 # =========================
-# 2. SYSTEM DEPENDENCIES
+# SYSTEM DEPENDENCIES
 # =========================
+
 echo "📦 Installing system dependencies..."
 
 sudo apt update
-sudo apt install -y python3-venv python3-pip git gpiod python3-libgpiod
+
+sudo apt install -y \
+python3 \
+python3-venv \
+python3-pip \
+git \
+gpiod \
+python3-libgpiod
+
+sudo usermod -aG dialout,gpio $USER_NAME
 
 # =========================
-# 3. GET PROJECT
+# CLONE / UPDATE
 # =========================
-if [ -d "$APP_DIR" ]; then
+
+if [ -d "$APP_DIR/.git" ]; then
+
     echo "🔄 Updating existing installation..."
+
     cd "$APP_DIR"
     git pull
+
 else
+
     echo "⬇️ Cloning repository..."
+
     git clone https://github.com/2212467/meshtastic-sos-keyboard.git "$APP_DIR"
-    cd "$APP_DIR"
+
 fi
+
+cd "$APP_DIR"
 
 # =========================
 # CONFIG FILE
 # =========================
 
 if [ ! -f "$APP_DIR/config.py" ]; then
+
+    echo "⚙️ Creating config.py"
+
     cp "$APP_DIR/config.py.example" "$APP_DIR/config.py"
+
 fi
 
 # =========================
-# 4. PYTHON VENV
+# PYTHON VENV
 # =========================
-echo "🐍 Creating virtual environment..."
 
-python3 -m venv myenv
+echo "🐍 Setting up Python environment..."
 
-myenv/bin/pip install --upgrade pip
-myenv/bin/pip install -r requirements.txt
+if [ ! -d "$APP_DIR/myenv" ]; then
+
+    python3 -m venv "$APP_DIR/myenv"
+
+fi
+
+"$APP_DIR/myenv/bin/pip" install --upgrade pip wheel setuptools
+
+"$APP_DIR/myenv/bin/pip" install -r "$APP_DIR/requirements.txt"
 
 # =========================
-# 5. SYSTEMD USER SERVICE
+# SYSTEMD USER SERVICE
 # =========================
-echo "⚙️ Creating systemd user service..."
 
-mkdir -p ~/.config/systemd/user
+echo "⚙️ Creating systemd service..."
 
-cat > ~/.config/systemd/user/sos-keyboard.service <<EOF
+mkdir -p "$USER_HOME/.config/systemd/user"
+
+cat > "$USER_HOME/.config/systemd/user/sos-keyboard.service" <<EOF
 [Unit]
 Description=SOS Meshtastic Keyboard
 After=default.target
@@ -70,10 +100,12 @@ After=default.target
 Type=simple
 
 WorkingDirectory=$APP_DIR
+
 ExecStart=$APP_DIR/myenv/bin/python $APP_DIR/sos_keyboard.py
 
 Restart=always
 RestartSec=3
+
 Environment=PYTHONUNBUFFERED=1
 
 [Install]
@@ -81,24 +113,44 @@ WantedBy=default.target
 EOF
 
 # =========================
-# 6. ENABLE SERVICE
+# ENABLE SERVICE
 # =========================
+
 echo "🔌 Enabling auto-start..."
+
+export XDG_RUNTIME_DIR="/run/user/$(id -u)"
 
 systemctl --user daemon-reload
 systemctl --user enable sos-keyboard.service
+systemctl --user restart sos-keyboard.service
 
-# garante que arranca sem login
 loginctl enable-linger $USER_NAME || true
+
+# =========================
+# TEST MESHTASTIC
+# =========================
+
+echo "📡 Testing Meshtastic connection..."
+
+if meshtastic --info > /dev/null 2>&1; then
+
+    echo "✅ Meshtastic device detected"
+
+else
+
+    echo "⚠️ WARNING: No Meshtastic device detected"
+
+fi
 
 # =========================
 # DONE
 # =========================
+
 echo ""
 echo "✅ INSTALL COMPLETE"
 echo ""
-echo "▶ Run now:"
-echo "   systemctl --user start sos-keyboard"
+echo "⚠️ Reboot recommended to apply GPIO permissions."
 echo ""
-echo "📊 Logs:"
-echo "   journalctl --user -u sos-keyboard -f"
+echo "After reboot:"
+echo "systemctl --user status sos-keyboard"
+echo ""
