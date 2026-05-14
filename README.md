@@ -42,7 +42,7 @@ NOTE: Default button messages can be changed on `config.sh`
 - USB cable to connect Rasp <-> Meshtastic
 
 ## Tested with
-- Raspberry Pi 4B (Debian GNU/Linux 13 (trixie))
+- Raspberry Pi 4B (Raspberry Pi OS 64-bit - Debian GNU/Linux 13 (trixie))
 - LILYGO TTGO LoRa32 V2.1 (Meshtastic 2.7.22 Alpha)
 
 ---
@@ -80,11 +80,15 @@ curl -sSL https://raw.githubusercontent.com/2212467/meshtastic-sos-keyboard/refs
 ---
 
 # Debug
-- Led color is RED
 
 Check meshtastic connection (must be inside myenv)
 ```bash
 meshtastic --info
+```
+
+Check GPIO access
+```bash
+ls /dev/gpiochip*
 ```
 
 ---

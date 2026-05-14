@@ -37,6 +37,14 @@ else
 fi
 
 # =========================
+# CONFIG FILE
+# =========================
+
+if [ ! -f "$APP_DIR/config.py" ]; then
+    cp "$APP_DIR/config.py.example" "$APP_DIR/config.py"
+fi
+
+# =========================
 # 4. PYTHON VENV
 # =========================
 echo "🐍 Creating virtual environment..."
