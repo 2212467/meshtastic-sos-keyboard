@@ -70,14 +70,15 @@ curl -sSL https://raw.githubusercontent.com/2212467/meshtastic-sos-keyboard/refs
 ---
 
 # health-check LED (GPIO status systemd)
-Blue = boot
-Green = ready
-Red = error
+- Blue = boot
+- Green = ready
+- Red = error
 
 ---
 
 # Debug
-- Led color is red
+- Led color is RED
+
 Check meshtastic connection (must be inside myenv)
 ```bash
 meshtastic --info
