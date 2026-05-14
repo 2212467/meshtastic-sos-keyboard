@@ -25,6 +25,7 @@ NOTE: After pressing the button for 2sec, it will send the message to the PRIMAR
 - works without Internet
 - uses official Meshtastic firmware
 
+NOTE: Default button messages can be changed on ``config.sh``
 ---
 
 # Hardware
