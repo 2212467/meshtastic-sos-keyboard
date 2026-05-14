@@ -10,6 +10,8 @@ Designed for:
 
 Works fully offline through LoRa mesh.
 
+NOTE: After pressing the button for 2sec, it will send the message to the PRIMARY channel.
+
 ---
 
 # Features
@@ -27,7 +29,7 @@ Works fully offline through LoRa mesh.
 
 # Hardware
 - Raspberry Pi (Zero / 3 / 4 / 5)
-- Node Meshtastic connected by USB (ex: LILYGO / T-Beam / etc.)
+- Node Meshtastic connected by USB (ex: LILYGO / T-Beam / etc.) (must accept serial connection)
 - 4x push buttons
 - 3x 220Ω resistor
 - 1x RBG led
@@ -55,6 +57,32 @@ Works fully offline through LoRa mesh.
 | 18 | Buzzer |
 | 06 | Groung |
 
+Check: https://github.com/2212467/meshtastic-sos-keyboard/blob/main/wiring/gpio_map.png?raw=true
+
+---
+
+# Installation
+
+```bash
+curl -sSL https://raw.githubusercontent.com/2212467/meshtastic-sos-keyboard/refs/heads/main/install.sh | bash
+```
+
+---
+
+# health-check LED (GPIO status systemd)
+Blue = boot
+Green = ready
+Red = error
+
+---
+
+# Debug
+- Led color is red
+Check meshtastic connection (must be inside myenv)
+```bash
+meshtastic --info
+```
+
 ---
 
 # Links used
@@ -66,10 +94,3 @@ https://app.cirkitdesigner.com/project
 https://pinouthub.com/raspberry-pi-zero/
 
 http://chatgpt.com
-
----
-
-# Installation
-
-```bash
-curl -sSL https://raw.githubusercontent.com/USER/repo/main/install.sh | bash
