@@ -18,10 +18,10 @@ NOTE: After pressing the button for 2sec, it will send the message to the PRIMAR
 
 # Features
 
-- 🚨 SOS emergency button
-- 📞 CALL request
-- ✅ OK status
-- 🆘 HELP request
+- 🆘 SOS emergency button
+- 📞 CALL request button
+- ✅ OK status button
+- ⚠️ Visit request button
 - long-press protection
 - LED + buzzer feedback
 - works without Internet
@@ -54,7 +54,7 @@ NOTE: Default button messages can be changed on `config.sh`
 | 17 | SOS |
 | 27 | CALL |
 | 22 | OK |
-| 23 | HELP |
+| 23 | VISIT |
 | O5 | RED COLOR |
 | O6 | GREEN COLOR |
 | 13 | BLUE COLOR |
@@ -79,26 +79,79 @@ curl -sSL https://raw.githubusercontent.com/2212467/meshtastic-sos-keyboard/refs
 
 ---
 
+## LED Status Codes
+
+| Color | Meaning |
+|---|---|
+| Blue | Booting |
+| Purple | Connecting to Meshtastic |
+| Green | Connected / ACK success |
+| Yellow | Sending message |
+| Red | Error / ACK failure |
+
+## Buzzer Codes
+
+| Sound | Meaning |
+|---|---|
+| Short beep | Success |
+| Long beep | Error |
+| Double short beep | Startup |
+
+---
+
 # Debug
 
-Check meshtastic connection (must be inside myenv)
+### No Meshtastic Device Found
+*(must be inside myenv)*
 ```bash
 meshtastic --info
 ```
+If not detected:
+- replace USB cable
+- verify Meshtastic firmware
+- reconnect device
 
-Check GPIO access
+### Check GPIO access
 ```bash
 ls /dev/gpiochip*
 ```
 
+### Buttons Not Working
+Verify wiring:
+
+GPIO -> BUTTON -> GND
+
+### RGB LED Always On
+Possible causes:
+- common anode vs common cathode mismatch
+- wrong polarity
+- missing resistor
+
 ---
 
-# Links used
+# Safety Notes
+This project is intended as:
+- emergency aid tool
+- offline communication system
+- community resilience platform
 
-https://www.raspberrypi.com/documentation/computers/raspberry-pi.html
+It should not replace:
+- certified emergency systems
+- official rescue equipment
+- medical alert systems
 
-https://app.cirkitdesigner.com/project
+**Always test your mesh network coverage before real-world deployment.**
 
-https://pinouthub.com/raspberry-pi-zero/
+# License
+Recommended license:
+`MIT License`
+*Simple, open-source, community-friendly.*
 
-http://chatgpt.com
+# Credits
+Built using:
+- [Meshtastic Portugal](https://meshtastic.pt/)
+- [Meshtastic Official Website](https://meshtastic.org/)
+- [Meshtastic Python API](https://github.com/meshtastic/python)
+- [gpiozero Documentation](https://gpiozero.readthedocs.io/)
+- [Raspberry Pi Official Website](https://www.raspberrypi.com/)
+- [ChatGPT](https://chatgpt.com)
