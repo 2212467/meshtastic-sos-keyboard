@@ -12,7 +12,7 @@ Works fully offline through LoRa mesh.
 
 NOTE: After pressing the button for 2sec, it will send the message to the PRIMARY channel.
 
-![Testing](https://github.com/2212467/meshtastic-sos-keyboard/blob/main/testing.jpeg?raw=true)
+![Testing](https://github.com/2212467/meshtastic-sos-keyboard/blob/main/testing.jpeg)
 
 ---
 
@@ -27,7 +27,7 @@ NOTE: After pressing the button for 2sec, it will send the message to the PRIMAR
 - works without Internet
 - uses official Meshtastic firmware
 
-NOTE: Default button messages can be changed on **config.sh**
+NOTE: Default button messages can be changed on `config.sh`
 ---
 
 # Hardware
@@ -60,8 +60,7 @@ NOTE: Default button messages can be changed on **config.sh**
 | 18 | Buzzer |
 | 06 | Groung |
 
-Check: https://github.com/2212467/meshtastic-sos-keyboard/blob/main/wiring/gpio_map.png
-![GPIO MAP](https://github.com/2212467/meshtastic-sos-keyboard/blob/main/wiring/gpio_map.png?raw=true)
+![GPIO MAP](https://github.com/2212467/meshtastic-sos-keyboard/blob/main/wiring/gpio_map.png)
 ---
 
 # Installation
